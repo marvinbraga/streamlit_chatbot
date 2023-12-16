@@ -5,7 +5,7 @@ from settings import *
 from utils.components import ChatMessagesComponent, ChatInputMessageComponent
 from utils.conversation import Conversation
 from utils.html import HtmlLoader, CssLoader
-from utils.sidebar import Sidebar
+from apps.sidebar import Sidebar
 
 
 class ChatBot:
