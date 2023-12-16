@@ -1,11 +1,11 @@
 import streamlit as st
 import streamlit.components.v1 as st_components
 
-from settings import *
+from apps.settings import *
+from apps.sidebar import Sidebar
 from utils.components import ChatMessagesComponent, ChatInputMessageComponent
 from utils.conversation import Conversation
 from utils.html import HtmlLoader, CssLoader
-from apps.sidebar import Sidebar
 
 
 class ChatBot:
