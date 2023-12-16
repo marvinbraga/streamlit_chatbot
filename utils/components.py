@@ -82,3 +82,15 @@ class ChatInputMessageComponent(AbstractChatComponent):
                 on_click=OnClickStrategyFactory.create_strategy().execute,
             )
         return self
+
+
+class HeaderComponent(AbstractChatComponent):
+    def __init__(self, title: str, conversation: Conversation):
+        self._conversation = conversation
+        self._title = title
+
+    def run(self):
+        st.markdown(
+            f"<h1 class='page-title'>{self._title}</h1>", unsafe_allow_html=True
+        )
+        return self

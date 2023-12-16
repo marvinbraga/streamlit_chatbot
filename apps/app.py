@@ -3,7 +3,7 @@ import streamlit.components.v1 as st_components
 
 from apps.settings import *
 from apps.sidebar import Sidebar
-from utils.components import ChatMessagesComponent, ChatInputMessageComponent
+from utils.components import ChatMessagesComponent, ChatInputMessageComponent, HeaderComponent
 from utils.conversation import Conversation
 from utils.html import HtmlLoader, CssLoader
 
@@ -27,10 +27,10 @@ class ChatBot:
         Sidebar().update()
 
         # Apresenta o título
-        title = "🤖 Marvin Conversation 🤖"
-        st.markdown(
-            f"<h1 class='page-title'>{title}</h1>", unsafe_allow_html=True
-        )
+        HeaderComponent(
+            title="🤖 Marvin Conversation 🤖",
+            conversation=st.session_state.conversation
+        ).run()
 
         # Apresenta as mensagens.
         conversation = st.session_state.conversation
