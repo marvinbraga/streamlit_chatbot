@@ -1,6 +1,7 @@
 import streamlit as st
 from abc import ABCMeta, abstractmethod
 from apps.settings import *
+from utils.conversation import Conversation
 from utils.html import ImageLoader
 from utils.messages import BaseMessage, AI, HumanMessage, AIMessage
 
@@ -12,13 +13,13 @@ class AbstractChatComponent(metaclass=ABCMeta):
 
 
 class ChatMessagesComponent(AbstractChatComponent):
-    def __init__(self, messages: list[BaseMessage]):
-        self._messages = messages
+    def __init__(self, conversation: Conversation):
+        self._conversation = conversation
 
     def run(self):
         chat_placeholder = st.container()
         with chat_placeholder:
-            for message in self._messages:
+            for message in self._conversation.messages:
                 icon_path = CHAT_ICON_PATH.format(AI_ICON if message.role == AI else USER_ICON)
                 icon_base64 = ImageLoader(icon_path).load()
                 div = f"""
@@ -43,9 +44,9 @@ class SubmitOnClickStrategy:
             return self
         # TODO: Faz o processamento para recuperar a resposta.
         # Atualiza as mensagens.
-        st.session_state.messages.append(HumanMessage(human_prompt))
-        count = (len(st.session_state.messages) + 1) // 2
-        st.session_state.messages.append(AIMessage(f"Nova resposta - ({count})"))
+        st.session_state.conversation.add_human_message(human_prompt)
+        count = (len(st.session_state.conversation.messages) + 1) // 2
+        st.session_state.conversation.add_ai_message(f"Nova resposta - ({count})")
         return self
 
 
