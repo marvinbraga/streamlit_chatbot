@@ -11,8 +11,10 @@ from utils.html import HtmlLoader, CssLoader
 class ChatBot:
     def __init__(self):
         CssLoader().load()
+        if "sidebar" not in st.session_state:
+            st.session_state.sidebar = Sidebar()
         # Mock de mensagens.
-        if 'conversation' not in st.session_state:
+        if "conversation" not in st.session_state:
             conversation = Conversation(
                 key_id="username-001",
                 key_secret="uuid_str",
@@ -21,10 +23,11 @@ class ChatBot:
             conversation.add_human_message("Olá! Meu nome é Marcus. Como você pode me ajudar?")
             conversation.add_ai_message("Olá Marcus! Por enquanto em nada, pois, ainda estou em desenvolvimento. :-)")
             st.session_state.conversation = conversation
+            st.session_state.sidebar.add_conversation(conversation)
 
     def run(self):
         # Exibe a sidebar.
-        Sidebar().update()
+        st.session_state.sidebar.update()
 
         # Apresenta o título
         HeaderComponent(
