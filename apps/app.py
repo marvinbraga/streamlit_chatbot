@@ -8,11 +8,16 @@ from utils.conversation import ConversationManager
 from utils.html import HtmlLoader, CssLoader
 
 
+@st.cache_data
+def get_conversation_manager():
+    return ConversationManager()
+
+
 class ChatBot:
     def __init__(self):
         CssLoader().load()
         if "conversation_manager" not in st.session_state:
-            conversation_manager = ConversationManager()
+            conversation_manager = get_conversation_manager()
             st.session_state.conversation_manager = conversation_manager
 
             if "sidebar" not in st.session_state:
@@ -23,10 +28,11 @@ class ChatBot:
         st.session_state.sidebar.update()
         # Apresenta as mensagens.
         if "conversation" in st.session_state:
+            conversation = st.session_state.conversation
             # Apresenta o título
             HeaderComponent(
-                title="🤖 Marvin Conversation 🤖",
-                conversation=st.session_state.conversation
+                title=conversation.title,
+                conversation=conversation,
             ).run()
 
             conversation = st.session_state.conversation
