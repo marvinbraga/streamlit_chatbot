@@ -33,3 +33,31 @@ class Conversation:
         message = AIMessage(content)
         self._messages.append(message)
         return self
+
+
+class ConversationManager:
+    def __init__(self):
+        self._conversations: list[Conversation] = []
+
+    @property
+    def conversations(self):
+        return self._conversations
+
+    def get_conversation(self, **kwargs) -> Conversation | None:
+        for conversation in self._conversations:
+            if conversation.key_id == kwargs.get("key_id") or conversation.key_secret == kwargs.get("key_secret"):
+                return conversation
+        return None
+
+    def add_conversation(self, conversation: Conversation):
+        self._conversations.append(conversation)
+        return self
+
+    def new_conversation(self, key_id: str, key_secret: str, title: str):
+        conversation = Conversation(
+            key_id=key_id,
+            key_secret=key_secret,
+            title=title,
+        )
+        self.add_conversation(conversation)
+        return conversation
