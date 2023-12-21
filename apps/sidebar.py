@@ -34,7 +34,8 @@ class ButtonCreateConversation:
 
 
 class AbstractButton(metaclass=ABCMeta):
-    def __init__(self, key_id: str):
+    def __init__(self, key_id: str, conversation_manager: ConversationManager):
+        self._conversation_manager = conversation_manager
         self._key_id = key_id
 
     @abstractmethod
@@ -86,21 +87,27 @@ class Sidebar:
                 conversation.title,
                 key="load_" + conversation.key_secret,
                 use_container_width=True,
-                on_click=lambda cid=conversation.key_secret: ButtonLoadConversation(cid).process()
+                on_click=lambda cid=conversation.key_secret: ButtonLoadConversation(
+                    cid, self._conversation_manager
+                ).process()
             )
             # Cria um botão para excluir cada conversa
             col2.button(
                 "✏️",
                 key="rename_" + conversation.key_secret,
                 use_container_width=True,
-                on_click=lambda cid=conversation.key_secret: ButtonRenameConversation(cid).process()
+                on_click=lambda cid=conversation.key_secret: ButtonRenameConversation(
+                    cid, self._conversation_manager
+                ).process()
             )
             # Cria um botão para excluir cada conversa
             col3.button(
                 "🗑️",
                 key="delete_" + conversation.key_secret,
                 use_container_width=True,
-                on_click=lambda cid=conversation.key_secret: ButtonDeleteConversation(cid).process()
+                on_click=lambda cid=conversation.key_secret: ButtonDeleteConversation(
+                    cid, self._conversation_manager
+                ).process()
             )
 
         return self
