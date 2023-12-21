@@ -45,19 +45,25 @@ class AbstractButton(metaclass=ABCMeta):
 
 class ButtonDeleteConversation(AbstractButton):
     def process(self):
-        print(f"DELETE: {self._key_id}")
+        conversation = self._conversation_manager.get_conversation(key_secret=self._key_id)
+        if conversation:
+            print(f"DELETE: {conversation.title}")
         return self
 
 
 class ButtonRenameConversation(AbstractButton):
     def process(self):
-        print(f"RENAME: {self._key_id}")
+        conversation = self._conversation_manager.get_conversation(key_secret=self._key_id)
+        if conversation:
+            print(f"RENAME: {conversation.title}")
         return self
 
 
 class ButtonLoadConversation(AbstractButton):
     def process(self):
-        print(f"LOAD: {self._key_id}")
+        conversation = self._conversation_manager.get_conversation(key_secret=self._key_id)
+        if conversation:
+            print(f"LOAD: {conversation.title}")
         return self
 
 
