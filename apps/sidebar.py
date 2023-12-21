@@ -1,4 +1,5 @@
 import uuid
+from abc import ABCMeta, abstractmethod
 
 import streamlit as st
 from slugify import slugify
@@ -32,6 +33,33 @@ class ButtonCreateConversation:
         return self
 
 
+class AbstractButton(metaclass=ABCMeta):
+    def __init__(self, key_id: str):
+        self._key_id = key_id
+
+    @abstractmethod
+    def process(self):
+        pass
+
+
+class ButtonDeleteConversation(AbstractButton):
+    def process(self):
+        print(f"DELETE: {self._key_id}")
+        return self
+
+
+class ButtonRenameConversation(AbstractButton):
+    def process(self):
+        print(f"RENAME: {self._key_id}")
+        return self
+
+
+class ButtonLoadConversation(AbstractButton):
+    def process(self):
+        print(f"LOAD: {self._key_id}")
+        return self
+
+
 class Sidebar:
     def __init__(self, conversation_manager: ConversationManager):
         self._conversation_manager = conversation_manager
@@ -52,6 +80,27 @@ class Sidebar:
         # Cria um botão para cada conversa
         st.sidebar.divider()
         for conversation in self._conversation_manager.conversations:
-            st.sidebar.button(conversation.title, key=conversation.key_id, use_container_width=True)
+            col1, col2, col3 = st.sidebar.columns((6, 1, 1))
+            # Cria um botão para cada conversa
+            col1.button(
+                conversation.title,
+                key="load_" + conversation.key_secret,
+                use_container_width=True,
+                on_click=lambda cid=conversation.key_secret: ButtonLoadConversation(cid).process()
+            )
+            # Cria um botão para excluir cada conversa
+            col2.button(
+                "✏️",
+                key="rename_" + conversation.key_secret,
+                use_container_width=True,
+                on_click=lambda cid=conversation.key_secret: ButtonRenameConversation(cid).process()
+            )
+            # Cria um botão para excluir cada conversa
+            col3.button(
+                "🗑️",
+                key="delete_" + conversation.key_secret,
+                use_container_width=True,
+                on_click=lambda cid=conversation.key_secret: ButtonDeleteConversation(cid).process()
+            )
 
         return self
