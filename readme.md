@@ -11,6 +11,8 @@ This project is a chatbot system developed in Python, using the Streamlit librar
 chatbot that can be easily integrated with various APIs and backend systems. The messaging system is highly
 configurable and was built with modularity in mind, facilitating customization and expansion.
 
+![Versão Atual](.res/master_version.png)
+
 ## Features
 
 - Interactive user interface created with Streamlit.
